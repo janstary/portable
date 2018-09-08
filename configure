@@ -1,0 +1,290 @@
+#!/bin/sh
+
+# Copyright (c) 2014, 2015, 2016, 2017 Ingo Schwarze <schwarze@openbsd.org>
+# Copyright (c) 2018 Jan Stary <hans@stare.cz>
+#
+# Permission to use, copy, modify, and distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+set -e
+
+[ -w config.log ] && mv config.log config.log.old
+[ -w config.h   ] && mv config.h config.h.old
+
+# Output file descriptors
+# 1: config.h, Makefile.local, Makefile.external
+# 2: original stderr
+# 3: config.log
+
+exec 3> config.log
+
+### the defaults ###
+
+PREFIX="/usr/local"
+BINDIR=
+LIBDIR=
+INCDIR=
+MANDIR=
+
+SRCDIR=`dirname "$0"`
+CC=`printf "all:\\n\\t@echo \\\$(CC)\\n" | env -i make -sf -`
+CFLAGS="-g -W -Wall -Wmissing-prototypes -Wstrict-prototypes -Wwrite-strings"
+CFLAGS="${CFLAGS} -Wno-unused-parameter"
+CFLAGS="${CFLAGS} -fPIC"
+LDFLAGS=
+LDADD=
+INSTALL="install"
+
+# functions
+HAVE_ERR=
+HAVE_NTOHL=
+HAVE_REALLOCARRAY=
+HAVE_RECALLOCARRAY=
+HAVE_STRCASESTR=
+HAVE_STRLCAT=
+HAVE_STRLCPY=
+HAVE_STRPTIME=
+HAVE_STRSEP=
+HAVE_STRTONUM=
+HAVE_SYS_ENDIAN=
+HAVE_VASPRINTF=
+
+# structures
+HAVE_MSGCONTROL=
+
+# extra LDFLAGS
+HAVE_LNSL=
+HAVE_LSOCKET=
+
+# structures
+HAVE_MSGCONTROL=
+
+# FIXME
+HAVE_PATH_MAX=
+HAVE_PROGNAME=
+
+# libraries
+HAVE_GSM=
+HAVE_SNDFILE=
+
+# audio drivers
+HAVE_COREAUDIO=
+HAVE_SNDIO=
+
+### read in manual settings ###
+
+if [ -r ./configure.local ]; then
+	echo "configure.local: reading..." 1>&2
+	echo "configure.local: reading..." 1>&3
+	cat ./configure.local 1>&3
+	. ./configure.local
+else
+	echo "configure.local: no (fully automatic configuration)" 1>&2
+	echo "configure.local: no (fully automatic configuration)" 1>&3
+fi
+echo 1>&3
+
+
+### how to run the have-*.c checks ###
+
+COMP="${CC} ${CFLAGS} ${LDFLAGS} -Wno-unused -Werror"
+
+# Check whether this HAVE_ setting is manually overridden.
+# If yes, use the override, if no, do not decide anything yet.
+# Arguments: lower-case name, upper-case name, manual value
+ismanual() {
+	[ -z "${3}" ] && return 1
+	echo "${1}: manual (HAVE_${2}=${3})" 1>&2
+	echo "${1}: manual (HAVE_${2}=${3})" 1>&3
+	echo 1>&3
+	return 0
+}
+
+# Run a single autoconfiguration test.
+# In case of success, enable the feature.
+# In case of failure, do not decide anything yet.
+# Arguments: lower-case name, upper-case name, additional flags
+singletest() {
+	cat 1>&3 << __HEREDOC__
+${1}${3}: testing...
+${COMP} -o have-${1} have-${1}.c ${3}
+__HEREDOC__
+
+	if ${COMP} -o "have-${1}" "${SRCDIR}/have-${1}.c" ${3} 1>&3 2>&3
+	then
+		echo "${1}${3}: ${CC} succeeded" 1>&3
+	else
+		echo "${1}${3}: ${CC} failed with $?" 1>&3
+		echo 1>&3
+		return 1
+	fi
+
+	if ./have-${1} 1>&3 2>&3; then
+		echo "${1}${3}: yes" 1>&2
+		echo "${1}${3}: yes" 1>&3
+		echo 1>&3
+		eval HAVE_${2}=1
+		rm "have-${1}"
+		return 0
+	else
+		echo "${1}${3}: execution failed with $?" 1>&3
+		echo 1>&3
+		rm "have-${1}"
+		return 1
+	fi
+}
+
+# Run a complete autoconfiguration test, including the check
+# for a manual override and disabling the feature on failure.
+# Arguments: lower case name, upper case name, additional flags
+runtest() {
+	eval _manual=\${HAVE_${2}}
+	ismanual "${1}" "${2}" "${_manual}" && return 0
+	singletest "${1}" "${2}" "${3}" && return 0
+	echo "${1}${3}: no" 1>&2
+	eval HAVE_${2}=0
+	return 1
+}
+
+### run the have-* tests ###
+
+# functions
+runtest strtonum	STRTONUM		|| true
+
+# structures
+runtest msgcontrol	MSGCONTROL		|| true
+
+# extra LDFLAGS
+runtest gethostbyname   LNSL	-lnsl		|| true
+runtest socket		LSOCKET -lsocket	|| true
+
+# libraries
+runtest gsm		GSM	-lgsm		|| true
+runtest sndfile		SNDFILE	-lsndfile	|| true
+
+# audio drivers
+runtest coreaudio	COREAUDIO		|| true
+runtest sndio		SNDIO	-lsndio		|| true
+
+### write config.h ###
+
+exec > config.h
+
+cat << __HEREDOC__
+#ifdef __cplusplus
+#error "Do not use C++"
+#endif
+
+#if !defined(__GNUC__) || (__GNUC__ < 4)
+#define __attribute__(x)
+#endif
+
+#if defined(__linux__) || defined(__MINT__)
+#define _GNU_SOURCE /* See have-*.c for what needs this. */
+#endif
+
+__HEREDOC__
+
+# FIXME: why?
+#[ ${HAVE_REALLOCARRAY}  -eq 0 ] && echo "#include <sys/types.h>"
+#[ ${HAVE_RECALLOCARRAY} -eq 0 ] && echo "#include <sys/types.h>"
+#[ ${HAVE_STRLCAT}       -eq 0 ] && echo "#include <sys/types.h>"
+#[ ${HAVE_STRLCPY}       -eq 0 ] && echo "#include <sys/types.h>"
+#[ ${HAVE_STRTONUM}      -eq 0 ] && echo "#include <stdlib.h>"
+#[ ${HAVE_VASPRINTF}     -eq 0 ] && echo "#include <stdarg.h>"
+# echo
+
+#[ ${HAVE_PATH_MAX} -eq 0 ] && echo "#define PATH_MAX 4096"
+#if [ ${HAVE_ENDIAN} -eq 0 -a ${HAVE_SYS_ENDIAN} -eq 0 ]; then
+	#echo "#define be32toh ntohl"
+	#echo "#define htobe32 htonl"
+#fi
+
+cat << __HEREDOC__
+/* functions */
+#define HAVE_STRTONUM ${HAVE_STRTONUM}
+
+/* structures */
+#define HAVE_MSGCONTROL ${HAVE_MSGCONTROL}
+
+/* libraries */
+#define HAVE_GSM	${HAVE_GSM}
+#define HAVE_SNDFILE	${HAVE_SNDFILE}
+
+/* audio drivers */
+#define HAVE_COREAUDIO	${HAVE_COREAUDIO}
+#define HAVE_SNDIO	${HAVE_SNDIO}
+
+__HEREDOC__
+
+# declare the compat functions
+[ ${HAVE_STRTONUM} -eq 0 ] && \
+	echo "extern	long long strtonum(const char *, long long, long long, const char **);"
+
+echo "config.h: written" 1>&2
+echo "config.h: written" 1>&3
+
+### write Makefile.local ###
+
+# libraries
+[ ${HAVE_GSM}        -eq 1 ] && LDADD="${LDADD} -lgsm"
+[ ${HAVE_SNDFILE}    -eq 1 ] && LDADD="${LDADD} -lsndfile"
+
+# audio drivers
+[ ${HAVE_COREAUDIO}  -eq 1 ] && LDADD="${LDADD} -Wl,-framework,CoreAudio"
+[ ${HAVE_SNDIO}      -eq 1 ] && LDADD="${LDADD} -lsndio"
+
+exec > Makefile.local
+
+[ -z "${BINDIR}"          ] && BINDIR="${PREFIX}/bin"
+[ -z "${LIBDIR}"          ] && LIBDIR="${PREFIX}/lib"
+[ -z "${INCDIR}"          ] && INCDIR="${PREFIX}/include"
+[ -z "${MANDIR}"          ] && MANDIR="${PREFIX}/man"
+
+cat << __HEREDOC__
+CC		= ${CC}
+CFLAGS		= ${CFLAGS}
+LDFLAGS		= ${LDFLAGS}
+LDADD		= ${LDADD}
+PREFIX		= ${PREFIX}
+BINDIR		= ${BINDIR}
+LIBDIR		= ${LIBDIR}
+INCDIR		= ${INCDIR}
+MANDIR		= ${MANDIR}
+INSTALL		= ${INSTALL}
+__HEREDOC__
+
+echo "Makefile.local: written" 1>&2
+echo "Makefile.local: written" 1>&3
+
+### write Makefile.external ###
+# FIXME should these be in Makefle.local too?
+
+exec > Makefile.external
+
+echo '# libraries recognized by ./configure'
+[ ${HAVE_GSM}        -eq 1 ] && echo "EXTERNAL_OBJS += gsm.o"
+[ ${HAVE_SNDFILE}    -eq 1 ] && echo "EXTERNAL_OBJS += sndfile.o"
+
+echo '# audio drivers recognized by ./configure'
+[ ${HAVE_COREAUDIO}  -eq 1 ] && echo "EXTERNAL_OBJS += coreaudio.o"
+[ ${HAVE_SNDIO}      -eq 1 ] && echo "EXTERNAL_OBJS += sndio.o"
+
+echo "Makefile.external: written" 1>&2
+echo "Makefile.external: written" 1>&3
+
+exit 0
+
+# exec > Makefile.local
+
+[ ${HAVE_LNSL}    -eq 1 ] && LDADD="${LDADD} -lnsl"
+[ ${HAVE_LSOCKET} -eq 1 ] && LDADD="${LDADD} -lsocket"

@@ -1,0 +1,10 @@
+prog.o: prog.c prog.h
+util.o: util.c util.h
+
+compat-strtonum.o: compat-strtonum.c
+
+gsm.o: gsm.c
+sndfile.o: sndfile.c
+
+coreaudio.o: coreaudio.c
+sndio.o: sndio.c
