@@ -76,9 +76,9 @@ install: all
 	install -d $(BINDIR) && install -m 0555 $(BINS) $(BINDIR)
 	install -d $(LIBDIR) && install -m 0444 $(LIBS) $(LIBDIR)
 	install -d $(INCDIR) && install -m 0444 $(HDRS) $(INCDIR)
-	install -d $(MANDIR)/man1 && install $(MAN1) $(MANDIR)/man1
-	#install -d $(MANDIR)/man3 && install $(MAN3) $(MANDIR)/man3
-	#install -d $(MANDIR)/man7 && install $(MAN7) $(MANDIR)/man7
+	install -d $(MANDIR)/man1 && install -m 0644 $(MAN1) $(MANDIR)/man1
+	#install -d $(MANDIR)/man3 && install -m 0644 $(MAN3) $(MANDIR)/man3
+	#install -d $(MANDIR)/man7 && install -m 0644 $(MAN7) $(MANDIR)/man7
 
 uninstall:
 	cd $(BINDIR)      && rm -f $(BINS)
