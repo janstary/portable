@@ -1,3 +1,5 @@
+compat function declaration for everything (we have just strtonum)
+
 README vs INSTALL?
 MAN1 MAN3
 

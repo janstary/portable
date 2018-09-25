@@ -191,8 +191,10 @@ cat << __HEREDOC__
 __HEREDOC__
 
 # compat function declarations
-[ ${HAVE_STRTONUM} -eq 0 ] && \
-echo "extern long long strtonum(const char*, long long, long long, const char**);"
+[ ${HAVE_STRTONUM} -eq 0 ] && echo \
+"extern long long strtonum(const char*, long long, long long, const char**);"
+[ ${HAVE_REALLOCARRAY} -eq 0 ] && echo \
+"void* reallocarray(void *optr, size_t nmemb, size_t size);"
 
 echo "config.h: written" 1>&2
 echo "config.h: written" 1>&3
