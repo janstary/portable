@@ -17,10 +17,11 @@ The following files included from outside sources are protected by
 other people's Copyright and are distributed under various 2-clause
 and 3-clause BSD licenses; see these individual files for details.
 
-have-err.c        Copyright (c) 2015 Ingo Schwarze
-have-strtonum.c   Copyright (c) 2015 Ingo Schwarze
+have-err.c            Copyright (c) 2015 Ingo Schwarze
+have-strtonum.c       Copyright (c) 2015 Ingo Schwarze
 
-compat-err.c      Copyright (c) 1993 The Regents of the University of California
-compat-strlcat.c  Copyright (c) 1998 Todd C. Miller
-compat-strlcpy.c  Copyright (c) 1998 Todd C. Miller
-compat-strtonum.c Copyright (c) 2004 Ted Unangst, Todd Miller
+compat-err.c          Copyright (c) 1993 The Regents of University of California
+compat-reallocarray.c Copyright (c) 2008 Otto Moerbeek <otto@drijf.net>
+compat-strlcat.c      Copyright (c) 1998 Todd C. Miller
+compat-strlcpy.c      Copyright (c) 1998 Todd C. Miller
+compat-strtonum.c     Copyright (c) 2004 Ted Unangst, Todd Miller

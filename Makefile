@@ -16,25 +16,28 @@ PROG_OBJS =	\
 HAVE_SRCS =			\
 	have-gethostbyname.c	\
 	have-socket.c		\
+	have-reallocarray.c	\
 	have-strlcat.c		\
 	have-strlcpy.c		\
 	have-strtonum.c		\
 	have-msgcontrol.c	\
 	have-sndfile.c
 
-COMPAT_SRCS =		\
-	compat-err.c	\
-	compat-strlcat.c\
-	compat-strlcpy.c\
+COMPAT_SRCS =			\
+	compat-err.c		\
+	compat-reallocarray.c	\
+	compat-strlcat.c	\
+	compat-strlcpy.c	\
 	compat-strtonum.c
 
-COMPAT_OBJS =		\
-	compat-err.o	\
-	compat-strlcat.o\
-	compat-strlcpy.o\
+COMPAT_OBJS =			\
+	compat-err.o		\
+	compat-reallocarray.o	\
+	compat-strlcat.o	\
+	compat-strlcpy.o	\
 	compat-strtonum.o
 
-EXT_SRCS =		\
+EXT_SRCS = \
 	sndfile.c
 
 SRCS = $(PROG_SRCS) $(COMPAT_OBJS) $(EXT_SRCS) $(HAVE_SRCS)

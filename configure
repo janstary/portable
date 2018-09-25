@@ -151,8 +151,12 @@ runtest() {
 
 ### run the tests ###
 
+# constants
+# FIXME PATH_MAX
+
 # functions
 runtest err		ERR			|| true
+runtest reallocarray	REALLOCARRAY		|| true
 runtest strlcat		STRLCAT			|| true
 runtest strlcpy		STRLCPY			|| true
 runtest strtonum	STRTONUM		|| true
@@ -176,20 +180,13 @@ exec > config.h
 #[ ${HAVE_PATH_MAX} -eq 0 ] && echo "#define PATH_MAX 4096"
 
 cat << __HEREDOC__
-/* functions */
-#define HAVE_ERR	${HAVE_ERR}
-#define HAVE_STRLCAT	${HAVE_STRLCAT}
-#define HAVE_STRLCPY	${HAVE_STRLCPY}
-#define HAVE_STRTONUM	${HAVE_STRTONUM}
-
-/* constants */
-/* FIXME */
-
-/* structures */
-#define HAVE_MSGCONTROL	${HAVE_MSGCONTROL}
-
-/* libraries */
-#define HAVE_SNDFILE	${HAVE_SNDFILE}
+#define HAVE_ERR		${HAVE_ERR}
+#define HAVE_REALLOCARRAY	${HAVE_REALLOCARRAY}
+#define HAVE_STRLCAT		${HAVE_STRLCAT}
+#define HAVE_STRLCPY		${HAVE_STRLCPY}
+#define HAVE_STRTONUM		${HAVE_STRTONUM}
+#define HAVE_MSGCONTROL		${HAVE_MSGCONTROL}
+#define HAVE_SNDFILE		${HAVE_SNDFILE}
 
 __HEREDOC__
 
