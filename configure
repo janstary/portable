@@ -158,7 +158,8 @@ runtest strtonum	STRTONUM		|| true
 # structures
 runtest msgcontrol	MSGCONTROL		|| true
 
-# extra LDFLAGS
+# extra LDFLAGS: some systems only provide
+# standard functions in a separate library.
 runtest gethostbyname   LNSL	-lnsl		|| true
 runtest socket		LSOCKET -lsocket	|| true
 
