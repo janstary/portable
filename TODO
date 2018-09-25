@@ -1,5 +1,7 @@
 README vs INSTALL?
-not only compiled bns, but also shell scripts (don't rm in clean)
+MAN1 MAN3
+
+not only compiled bins, but also shell scripts (don't rm in clean)
 configure.local.example
 static libs
 dynamic libs: names, LIB_SRCS, LIB_OBJS, HDRS, MAN3

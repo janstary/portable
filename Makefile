@@ -17,28 +17,31 @@ EXTERNAL_SRCS = \
 	sndio.c		\
 	sndio.h
 
-# The autodetection programs
+# autodetect
 HAVE_SRCS = \
+	have-gethostbyname.c	\
+	have-socket.c		\
 	have-strtonum.c		\
+				\
 	have-msgcontrol.c	\
+				\
 	have-gsm.c		\
 	have-sndfile.c		\
+				\
 	have-coreaudio.c	\
 	have-sndio.c
 
-# The compatibility implementations
-COMPAT_SRCS = compat-strtonum.c
-COMPAT_OBJS = compat-strtonum.o
+# compatibility
+COMPAT_SRCS = \
+	compat-err.c		\
+	compat-strtonum.c
 
-SRCS = \
-	$(PROG_SRCS)		\
-	$(EXTERNAL_SRCS)	\
-	$(HAVE_SRCS)		\
-	$(COMPAT_SRCS)
+COMPAT_OBJS = \
+	compat-err.o		\
+	compat-strtonum.o
 
-# The external dependencies
-include Makefile.external
-OBJS  = $(PROG_OBJS) $(COMPAT_OBJS) $(EXTERNAL_OBJS)
+SRCS = $(PROG_SRCS) $(EXTERNAL_SRCS) $(HAVE_SRCS) $(COMPAT_SRCS)
+OBJS = $(PROG_OBJS) $(COMPAT_OBJS) $(EXTERNAL_OBJS)
 
 BINS = prog
 MAN1 = prog.1
@@ -53,7 +56,7 @@ DIST = \
 	$(HDRS)			\
 	$(MANS)
 
-all: $(BINS) $(MANS) Makefile.local Makefile.external
+all: $(BINS) $(MANS) Makefile.local
 
 prog: $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJS) $(LDADD)
@@ -91,9 +94,9 @@ clean:
 	rm -rf *.dSYM *.core *~ .*~
 
 distclean: clean
-	rm -f Makefile.local Makefile.external config.*
+	rm -f Makefile.local config.*
 
-Makefile.local Makefile.external config.h: configure $(HAVE_SRCS)
+Makefile.local config.h: configure $(HAVE_SRCS)
 	@echo "$@ is out of date; please run ./configure"
 	@exit 1
 
