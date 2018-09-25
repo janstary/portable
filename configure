@@ -154,6 +154,7 @@ runtest() {
 # functions
 runtest err		ERR			|| true
 runtest strlcat		STRLCAT			|| true
+runtest strlcpy		STRLCPY			|| true
 runtest strtonum	STRTONUM		|| true
 
 # structures
@@ -178,6 +179,7 @@ cat << __HEREDOC__
 /* functions */
 #define HAVE_ERR	${HAVE_ERR}
 #define HAVE_STRLCAT	${HAVE_STRLCAT}
+#define HAVE_STRLCPY	${HAVE_STRLCPY}
 #define HAVE_STRTONUM	${HAVE_STRTONUM}
 
 /* constants */

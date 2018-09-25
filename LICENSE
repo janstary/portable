@@ -21,4 +21,6 @@ have-err.c        Copyright (c) 2015 Ingo Schwarze
 have-strtonum.c   Copyright (c) 2015 Ingo Schwarze
 
 compat-err.c      Copyright (c) 1993 The Regents of the University of California
+compat-strlcat.c  Copyright (c) 1998 Todd C. Miller
+compat-strlcpy.c  Copyright (c) 1998 Todd C. Miller
 compat-strtonum.c Copyright (c) 2004 Ted Unangst, Todd Miller

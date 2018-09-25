@@ -17,6 +17,7 @@ HAVE_SRCS =			\
 	have-gethostbyname.c	\
 	have-socket.c		\
 	have-strlcat.c		\
+	have-strlcpy.c		\
 	have-strtonum.c		\
 	have-msgcontrol.c	\
 	have-sndfile.c
@@ -24,11 +25,13 @@ HAVE_SRCS =			\
 COMPAT_SRCS =		\
 	compat-err.c	\
 	compat-strlcat.c\
+	compat-strlcpy.c\
 	compat-strtonum.c
 
 COMPAT_OBJS =		\
 	compat-err.o	\
 	compat-strlcat.o\
+	compat-strlcpy.o\
 	compat-strtonum.o
 
 EXT_SRCS =		\
