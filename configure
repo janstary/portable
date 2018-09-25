@@ -235,8 +235,8 @@ MANDIR		= ${MANDIR}
 
 __HEREDOC__
 
-[ ${HAVE_GSM}        -eq 1 ] && echo "EXTERNAL_OBJS += gsm.o"
-[ ${HAVE_SNDFILE}    -eq 1 ] && echo "EXTERNAL_OBJS += sndfile.o"
+[ ${HAVE_GSM}        -eq 1 ] && echo "EXT_OBJS	+= gsm.o"
+[ ${HAVE_SNDFILE}    -eq 1 ] && echo "EXT_OBJS	+= sndfile.o"
 
 echo "Makefile.local: written" 1>&2
 echo "Makefile.local: written" 1>&3

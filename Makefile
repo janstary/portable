@@ -1,41 +1,40 @@
 VERSION	= 1.2.3
 TARBALL = prog-$(VERSION).tar.gz
 
-# The local environment
 include Makefile.local
 
-# These will be compiled into the program
-PROG_SRCS = prog.c prog.h util.c util.h
-PROG_OBJS = prog.o util.o
+PROG_SRCS =	\
+	prog.c	\
+	prog.h	\
+	util.c	\
+	util.h
 
-# These may be used if we have the libs to use them
-EXTERNAL_SRCS = \
-	gsm.c		\
-	sndfile.c
+PROG_OBJS =	\
+	prog.o	\
+	util.o
 
-# autodetect
-HAVE_SRCS = \
+HAVE_SRCS =			\
 	have-gethostbyname.c	\
 	have-socket.c		\
 	have-strtonum.c		\
-				\
 	have-msgcontrol.c	\
-				\
 	have-gsm.c		\
 	have-sndfile.c
 
-
-# compatibility
-COMPAT_SRCS = \
-	compat-err.c		\
+COMPAT_SRCS =		\
+	compat-err.c	\
 	compat-strtonum.c
 
-COMPAT_OBJS = \
-	compat-err.o		\
+COMPAT_OBJS =		\
+	compat-err.o	\
 	compat-strtonum.o
 
-SRCS = $(PROG_SRCS) $(EXTERNAL_SRCS) $(HAVE_SRCS) $(COMPAT_SRCS)
-OBJS = $(PROG_OBJS) $(COMPAT_OBJS) $(EXTERNAL_OBJS)
+EXT_SRCS =		\
+	gsm.c		\
+	sndfile.c
+
+SRCS = $(PROG_SRCS) $(COMPAT_OBJS) $(EXT_SRCS) $(HAVE_SRCS)
+OBJS = $(PROG_OBJS) $(COMPAT_OBJS) $(EXT_OBJS)
 
 BINS = prog
 MAN1 = prog.1
@@ -78,8 +77,8 @@ uninstall:
 	cd $(LIBDIR)      && rm -f $(LIBS)
 	cd $(INCDIR)      && rm -f $(HDRS)
 	cd $(MANDIR)/man1 && rm -f $(MAN1)
-	cd $(MANDIR)/man3 && rm -f $(MAN3)
-	cd $(MANDIR)/man7 && rm -f $(MAN7)
+	#cd $(MANDIR)/man3 && rm -f $(MAN3)
+	#cd $(MANDIR)/man7 && rm -f $(MAN7)
 
 clean:
 	rm -f $(BINS) $(OBJS)
@@ -100,8 +99,6 @@ depend: config.h
 		s|\\\n||g; s|  +| |g; s| $$||mg; print;' \
 		depend > _depend
 	mv _depend depend
-
-# making a release tarball
 
 dist: $(TARBALL)
 $(TARBALL): $(DIST)
