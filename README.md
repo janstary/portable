@@ -43,7 +43,6 @@ please let us know.
 
 ### libraries
 
-* [`have-gsm.c`](have-gsm.c)
 * [`have-sndfile.c`](have-sndfile.c)
 
 ## replacements

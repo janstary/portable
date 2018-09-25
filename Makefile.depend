@@ -4,5 +4,4 @@ util.o: util.c util.h
 compat-err.o: compat-err.c
 compat-strtonum.o: compat-strtonum.c
 
-gsm.o: gsm.c
 sndfile.o: sndfile.c

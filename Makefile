@@ -18,7 +18,6 @@ HAVE_SRCS =			\
 	have-socket.c		\
 	have-strtonum.c		\
 	have-msgcontrol.c	\
-	have-gsm.c		\
 	have-sndfile.c
 
 COMPAT_SRCS =		\
@@ -30,7 +29,6 @@ COMPAT_OBJS =		\
 	compat-strtonum.o
 
 EXT_SRCS =		\
-	gsm.c		\
 	sndfile.c
 
 SRCS = $(PROG_SRCS) $(COMPAT_OBJS) $(EXT_SRCS) $(HAVE_SRCS)

@@ -72,7 +72,6 @@ HAVE_LSOCKET=
 HAVE_PROGNAME=
 
 # extra libraries
-HAVE_GSM=
 HAVE_SNDFILE=
 
 ### read in manual settings ###
@@ -164,7 +163,6 @@ runtest gethostbyname   LNSL	-lnsl		|| true
 runtest socket		LSOCKET -lsocket	|| true
 
 # libraries
-runtest gsm		GSM	-lgsm		|| true
 runtest sndfile		SNDFILE	-lsndfile	|| true
 
 ### write config.h ###
@@ -194,7 +192,6 @@ cat << __HEREDOC__
 #define HAVE_MSGCONTROL	${HAVE_MSGCONTROL}
 
 /* libraries */
-#define HAVE_GSM	${HAVE_GSM}
 #define HAVE_SNDFILE	${HAVE_SNDFILE}
 
 __HEREDOC__
@@ -210,7 +207,6 @@ echo "config.h: written" 1>&3
 
 [ ${HAVE_LNSL}       -eq 1 ] && LDADD="${LDADD} -lnsl"
 [ ${HAVE_LSOCKET}    -eq 1 ] && LDADD="${LDADD} -lsocket"
-[ ${HAVE_GSM}        -eq 1 ] && LDADD="${LDADD} -lgsm"
 [ ${HAVE_SNDFILE}    -eq 1 ] && LDADD="${LDADD} -lsndfile"
 
 exec > Makefile.local
@@ -235,7 +231,6 @@ MANDIR		= ${MANDIR}
 
 __HEREDOC__
 
-[ ${HAVE_GSM}        -eq 1 ] && echo "EXT_OBJS	+= gsm.o"
 [ ${HAVE_SNDFILE}    -eq 1 ] && echo "EXT_OBJS	+= sndfile.o"
 
 echo "Makefile.local: written" 1>&2
