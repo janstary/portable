@@ -153,6 +153,7 @@ runtest() {
 
 # functions
 runtest err		ERR			|| true
+runtest strlcat		STRLCAT			|| true
 runtest strtonum	STRTONUM		|| true
 
 # structures
@@ -171,19 +172,12 @@ runtest sndfile		SNDFILE	-lsndfile	|| true
 exec > config.h
 
 # FIXME
-#[ ${HAVE_REALLOCARRAY}  -eq 0 ] && echo "#include <sys/types.h>"
-#[ ${HAVE_RECALLOCARRAY} -eq 0 ] && echo "#include <sys/types.h>"
-#[ ${HAVE_STRLCAT}       -eq 0 ] && echo "#include <sys/types.h>"
-#[ ${HAVE_STRLCPY}       -eq 0 ] && echo "#include <sys/types.h>"
-#[ ${HAVE_STRTONUM}      -eq 0 ] && echo "#include <stdlib.h>"
-#[ ${HAVE_VASPRINTF}     -eq 0 ] && echo "#include <stdarg.h>"
-# echo
-
 #[ ${HAVE_PATH_MAX} -eq 0 ] && echo "#define PATH_MAX 4096"
 
 cat << __HEREDOC__
 /* functions */
 #define HAVE_ERR	${HAVE_ERR}
+#define HAVE_STRLCAT	${HAVE_STRLCAT}
 #define HAVE_STRTONUM	${HAVE_STRTONUM}
 
 /* constants */
