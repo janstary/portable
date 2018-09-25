@@ -14,6 +14,7 @@ PROG_OBJS =	\
 	util.o
 
 HAVE_SRCS =			\
+	have-err.c		\
 	have-gethostbyname.c	\
 	have-socket.c		\
 	have-reallocarray.c	\
