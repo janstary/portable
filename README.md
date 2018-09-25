@@ -35,6 +35,8 @@ please let us know.
 
 * [`have-strtonum.c`](have-strtonum.c)
 
+### constants
+
 ### structures
 
 * [`have-msgcontrol.c`](have-msgcontrol.c)
@@ -43,11 +45,6 @@ please let us know.
 
 * [`have-gsm.c`](have-gsm.c)
 * [`have-sndfile.c`](have-sndfile.c)
-
-### audio drivers
-
-* [`have-coreadio.c`](have-coreadio.c) (MacOS)
-* [`have-sndio.c`](have-sndio.c) (OpenBSD)
 
 ## replacements
 

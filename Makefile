@@ -11,11 +11,7 @@ PROG_OBJS = prog.o util.o
 # These may be used if we have the libs to use them
 EXTERNAL_SRCS = \
 	gsm.c		\
-	sndfile.c	\
-	coreaudio.c	\
-	coreaudio.h	\
-	sndio.c		\
-	sndio.h
+	sndfile.c
 
 # autodetect
 HAVE_SRCS = \
@@ -26,10 +22,8 @@ HAVE_SRCS = \
 	have-msgcontrol.c	\
 				\
 	have-gsm.c		\
-	have-sndfile.c		\
-				\
-	have-coreaudio.c	\
-	have-sndio.c
+	have-sndfile.c
+
 
 # compatibility
 COMPAT_SRCS = \
