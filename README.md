@@ -57,12 +57,11 @@ Please report any that turn out to be missing.
 
 ### configuration
 
-Run `./configure`. This will produce four files:
+Run `./configure`. This will produce three files:
 
 * `config.h` containing the `#include` and `HAVE_` lines
 * `config.log` containing the details of autodetection
-* `Makefile.local` which defines `CC`, `PREFIX` and the like
-* `Makefile.external` which describes the detected libraries
+* `Makefile.local` defining `CC`, `PREFIX`, etc and library flags
 
 Read the standard output and `Makefile.local`.
 If these look different from what you expected,
