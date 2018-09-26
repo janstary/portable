@@ -32,6 +32,12 @@ implementations does not work, please let me know.
 
 ### functions
 
+* [`have-err.c`](have-err.c)
+* [`have-gethostbyname.c`](have-gethostbyname.c)
+* [`have-reallocarray.c`](have-reallocarray.c)
+* [`have-socket.c`](have-socket.c)
+* [`have-strlcat.c`](have-strlcat.c)
+* [`have-strlcpy.c`](have-strlcpy.c)
 * [`have-strtonum.c`](have-strtonum.c)
 
 ### constants
@@ -50,7 +56,11 @@ For C functions that might not be present in the system,
 we provide portable `compat-*.c` implementations.
 Please report any that turn out to be missing.
 
-* [compat-strtonum.c](compat-strtonum.c)
+* [`compat-err.c`](compat-err.c)
+* [`compat-reallocarray.c`](compat-reallocarray.c)
+* [`compat-strlcat.c`](compat-strlcat.c)
+* [`compat-strlcpy.c`](compat-strlcpy.c)
+* [`compat-strtonum.c`](compat-strtonum.c)
 
 ## how is this used
 
