@@ -180,6 +180,7 @@ exec > config.h
 #[ ${HAVE_PATH_MAX} -eq 0 ] && echo "#define PATH_MAX 4096"
 
 [ ${HAVE_REALLOCARRAY} -eq 0 ] && echo "#include <sys/types.h>"
+[ ${HAVE_STRTONUM}     -eq 0 ] && echo "#include <sys/types.h>"
 
 cat << __HEREDOC__
 
