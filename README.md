@@ -20,7 +20,6 @@ to turn any given nice little project into a monster.
 These are the systems where this is supposed to work.
 If any of the autodetection fails or any of the compatibility
 implementations does not work, please let me know.
-please let us know.
 
 * OpenBSD
 * FreeBSD
