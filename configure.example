@@ -1,0 +1,68 @@
+# Copyright (c) 2014, 2015, 2016, 2017 Ingo Schwarze <schwarze@openbsd.org>
+# Copyright (c) 2018 Jan Stary <hans@stare.cz>
+#
+# Permission to use, copy, modify, and distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+# For all settings documented in this file, there are reasonable
+# defaults and/or the ./configure script attempts autodetection.
+# Consequently, you only need to create a file ./configure.local
+# and put any of these settings into it if ./configure autodetection
+# fails or if you want to make different choices for other reasons.
+
+PREFIX="/usr/local"
+BINDIR="${PREFIX}/bin"
+SBINDIR="${PREFIX}/sbin"
+MANDIR="${PREFIX}/man"
+
+# When library autodetection decides to use -L/usr/local/lib,
+# -I/usr/local/include is automatically added to CFLAGS.
+# If you manually set LD_OHASH to something including -L/usr/local/lib,
+# chances are you will also need the following line:
+
+CFLAGS="${CFLAGS} -I/usr/local/include"
+
+# Some platforms may need an additional linker flag for recvmsg(2).
+# If none is needed or it is -lsocket, it is autodetected.
+# Otherwise, set the following variable.
+
+LD_RECVMSG="-lsocket"
+
+# It is possible to change the utility program used for installation
+# and the modes files are installed with.  The defaults are:
+
+INSTALL="install"
+INSTALL_PROGRAM="${INSTALL} -m 0555"
+INSTALL_LIB="${INSTALL} -m 0444"
+INSTALL_MAN="${INSTALL} -m 0444"
+INSTALL_DATA="${INSTALL} -m 0444"
+
+# You can manually override the compiler to be used.
+# But that's rarely useful because ./configure asks your make(1)
+# which compiler to use, and that answer will hardly be wrong.
+
+CC=cc
+
+# The default compiler flags are:
+
+CFLAGS="-g -W -Wall -Wstrict-prototypes -Wno-unused-parameter -Wwrite-strings"
+
+# In rare cases, it may be required to skip individual automatic tests.
+# Each of the following variables can be set to 0 (test will not be run
+# and will be regarded as failed) or 1 (test will not be run and will
+# be regarded as successful).
+
+HAVE_ERR=0
+HAVE_REALLOCARRAY=0
+HAVE_STRLCAT=0
+HAVE_STRLCPY=0
+HAVE_STRTONUM=0
