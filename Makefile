@@ -79,6 +79,7 @@ install: all
 	install -d $(MANDIR)/man1 && install -m 0644 $(MAN1) $(MANDIR)/man1
 	#install -d $(MANDIR)/man3 && install -m 0644 $(MAN3) $(MANDIR)/man3
 	#install -d $(MANDIR)/man7 && install -m 0644 $(MAN7) $(MANDIR)/man7
+	which makewhatis > /dev/null && makewhatis $(MANDIR)
 
 uninstall:
 	cd $(BINDIR)      && rm -f $(BINS)
