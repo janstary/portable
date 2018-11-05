@@ -179,6 +179,13 @@ exec > config.h
 # FIXME
 #[ ${HAVE_PATH_MAX} -eq 0 ] && echo "#define PATH_MAX 4096"
 
+[ ${HAVE_ERR} -eq 0 ] && cat << __HEREDOC__
+	#include <errno.h>
+	#include <stdarg.h>
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+__HEREDOC__
 [ ${HAVE_REALLOCARRAY} -eq 0 ] && echo "#include <sys/types.h>"
 [ ${HAVE_STRTONUM}     -eq 0 ] && echo "#include <sys/types.h>"
 
