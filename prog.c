@@ -1,8 +1,8 @@
 #include "config.h"
-#include "prog.h"
-
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "prog.h"
 
 #ifdef HAVE_ERR
 #include <err.h>
