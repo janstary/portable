@@ -1,5 +1,6 @@
+NAME	= prog
 VERSION	= 1.2.3
-TARBALL = prog-$(VERSION).tar.gz
+TARBALL = $(NAME)-$(VERSION).tar.gz
 
 include Makefile.local
 
@@ -91,7 +92,7 @@ uninstall:
 
 clean:
 	rm -f $(BINS) $(OBJS)
-	rm -rf $(TARBALL) prog-$(VERSION) .dist
+	rm -rf $(TARBALL) $(NAME)-$(VERSION) .dist
 	rm -rf depend _depend .depend
 	rm -rf *.dSYM *.core *~ .*~
 
@@ -112,15 +113,15 @@ depend: config.h
 dist: $(TARBALL)
 $(TARBALL): $(DIST)
 	rm -rf .dist
-	mkdir -p .dist/prog-$(VERSION)/
-	$(INSTALL) -m 0644 $(DIST) .dist/prog-$(VERSION)/
-	( cd .dist/prog-$(VERSION) && chmod 755 configure )
-	( cd .dist && tar czf ../$@ prog-$(VERSION) )
+	mkdir -p .dist/$(NAME)-$(VERSION)/
+	$(INSTALL) -m 0644 $(DIST) .dist/$(NAME)-$(VERSION)/
+	( cd .dist/$(NAME)-$(VERSION) && chmod 755 configure )
+	( cd .dist && tar czf ../$@ $(NAME)-$(VERSION) )
 	rm -rf .dist/
 
 distcheck: dist
-	rm -rf prog-$(VERSION) && tar xzf $(TARBALL)
-	( cd prog-$(VERSION) && ./configure && make all )
+	rm -rf $(NAME)-$(VERSION) && tar xzf $(TARBALL)
+	( cd $(NAME)-$(VERSION) && ./configure && make all )
 
 .PHONY: install uninstall
 .PHONY: clean distclean
